@@ -1,16 +1,19 @@
-import pandas as pd
+# fred_plot.py
 import pandas_datareader.data as web
 import matplotlib.pyplot as plt
+import sys
 
-# Step 1: Import data from FRED
-gdp = web.DataReader("GDP", "fred")
+def get_fred_data(series):
+    data = web.DataReader(series, "fred")
+    data.to_csv(f"{series}.csv")
+    data.plot(title=series)
+    plt.savefig(f"{series}.png")
+    print(f"{series} data saved and plotted!")
 
-# Step 2: Save data to CSV
-gdp.to_csv("gdp.csv")
-print("GDP data saved to gdp.csv")
-
-# Step 3: Make a plot
-plt.figure(figsize=(8,5))
-gdp.plot(title="US GDP")
-plt.savefig("gdp_plot.png")
-print("Plot saved to gdp_plot.png")
+if __name__ == "__main__":
+    # Read the series name from command line
+    if len(sys.argv) > 1:
+        series = sys.argv[1]  # first argument
+    else:
+        series = "GDP"  # default series
+    get_fred_data(series)
