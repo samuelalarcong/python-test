@@ -1,7 +1,7 @@
 name: FRED Data and Plot
 
 on:
-  workflow_dispatch:  # manual run
+  workflow_dispatch:
 
 jobs:
   run-fred:
