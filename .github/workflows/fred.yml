@@ -1,0 +1,31 @@
+name: FRED Data and Plot
+
+on:
+  workflow_dispatch:  # manual run
+
+jobs:
+  run-fred:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run FRED script
+        run: python fred_plot.py
+
+      - name: Upload results
+        uses: actions/upload-artifact@v4
+        with:
+          name: fred-results
+          path: |
+            gdp.csv
+            gdp_plot.png
