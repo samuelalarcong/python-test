@@ -1,7 +1,10 @@
-name: FRED Data Flexible
-
 on:
-  workflow_dispatch:  # manual run
+  workflow_dispatch:
+    inputs:
+      series:
+        description: "FRED series to download"
+        required: true
+        default: "GDP"
 
 jobs:
   run-fred:
@@ -19,14 +22,11 @@ jobs:
       - name: Install dependencies
         run: pip install -r requirements.txt
 
-      - name: Run FRED script for GDP
-        run: python fred_plot.py GDP
+      - name: Run FRED script
+        run: python fred_plot.py ${{ github.event.inputs.series }}
 
-      - name: Run FRED script for CPI
-        run: python fred_plot.py CPI
-
-      - name: Upload results
+      - name: Upload result
         uses: actions/upload-artifact@v4
         with:
-          name: fred-results
+          name: fred-result
           path: "*.csv, *.png"
